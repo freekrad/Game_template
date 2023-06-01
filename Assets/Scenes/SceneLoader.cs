@@ -13,5 +13,8 @@ public class ScenLoader : MonoBehaviour
   public GameObject loadingImage;
   AsyncOporetion asyncOperation;
   
-  
+  private void Start()
+  {
+    if(SceneManager.GetActiveScene().name == "Scene_loading")
+  }
 }
