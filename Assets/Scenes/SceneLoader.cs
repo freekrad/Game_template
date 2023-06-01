@@ -16,5 +16,6 @@ public class ScenLoader : MonoBehaviour
   private void Start()
   {
     if(SceneManager.GetActiveScene().name == "Scene_loading")
+      StartCoroutine("AsyncLoadPressKeyCOR", PlayerPrefs.GetString('current_scene'));
   }
 }
