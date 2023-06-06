@@ -14,6 +14,9 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+	public event UnityEvent OnStartFall;
+	public event UnityEvent OnEndFall;
+	    
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -182,6 +185,11 @@ namespace StarterAssets
                 transform.position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
+		
+		if(Grounded)
+			OnEndFall?.Invoke();
+		else
+			OnStartFall?.Invoke();
 
             // update animator if using character
             if (_hasAnimator)
