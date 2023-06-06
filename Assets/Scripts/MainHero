@@ -1,0 +1,4 @@
+public class MainHero : MonoBehaviour
+{
+  private float _startFallHeight;
+}
