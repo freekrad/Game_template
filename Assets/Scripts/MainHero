@@ -1,4 +1,22 @@
 public class MainHero : MonoBehaviour
 {
+  [SerialysFild] float deadlyFallHeight = 100;
   private float _startFallHeight;
+  
+  void Start() {
+  ThirdPersonContorller.OnStartFall += StartFall;
+  ThirdPersonContorller.OnEndFall += EndFall;
+  }
+  
+  void StartFall() {
+  _startFallHeight = transform.position.y;
+  }
+  
+  void EndFall() {
+  if(_startFallHeight - transform.position.y >= deadlyFallHeight)
+   Die();
+  }
+  
+  void Die(){
+  }
 }
