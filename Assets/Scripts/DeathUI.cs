@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DeathUI : MonoBehaviour
 {
-  [SerializeField] private GameObject buton01;
+  [SerializeField] GameObject buton01;
+  [SerializeField] float deathUIBlackoutSpeed;
   
   public void SwitchScene(string sceneName) {
     SceneManager.LoadScene(sceneName);
@@ -22,7 +24,7 @@ public class DeathUI : MonoBehaviour
 
       while (Time.timeScale > 0.01f)
       {
-          float blackoutSpeed = deathMenuBlackoutSpeed * Time.deltaTime;
+          float blackoutSpeed = deathUIBlackoutSpeed * Time.deltaTime;
           col.a += blackoutSpeed / 2;
           bg.color = col;
 
@@ -31,7 +33,7 @@ public class DeathUI : MonoBehaviour
           yield return null;
       }
 
-      deathMenuButon1.SetActive(true);
+      buton01.SetActive(true);
 
       Cursor.visible = true;
 

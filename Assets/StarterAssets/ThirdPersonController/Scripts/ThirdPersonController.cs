@@ -1,5 +1,6 @@
-﻿ using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
+﻿using System;
+using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -14,8 +15,8 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
-	public event UnityEvent OnStartFall;
-	public event UnityEvent OnEndFall;
+	public static event Action HitStartFall;
+	public static event Action HitEndFall;
 	    
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
@@ -186,10 +187,12 @@ namespace StarterAssets
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
 		
-		if(Grounded)
-			OnEndFall?.Invoke();
-		else
-			OnStartFall?.Invoke();
+            if(Grounded){
+                HitEndFall?.Invoke();
+            }
+            else {
+                HitStartFall?.Invoke();
+            }
 
             // update animator if using character
             if (_hasAnimator)
@@ -383,7 +386,7 @@ namespace StarterAssets
             {
                 if (FootstepAudioClips.Length > 0)
                 {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
+                    var index = UnityEngine.Random.Range(0, FootstepAudioClips.Length);
                     AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
                 }
             }
