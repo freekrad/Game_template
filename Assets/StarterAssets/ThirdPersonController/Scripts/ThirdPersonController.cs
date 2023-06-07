@@ -1,5 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -15,8 +15,8 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
-	public static event Action HitStartFall;
-	public static event Action HitEndFall;
+	public static UnityEvent OnStartFall = new UnityEvent();
+	public static UnityEvent OnEndFall = new UnityEvent();
 	    
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
@@ -77,7 +77,7 @@ namespace StarterAssets
         public float CameraAngleOverride = 0.0f;
 
         [Tooltip("For locking the camera position on all axis")]
-        public bool LockCameraPosition = false;
+        public static bool LockCameraPosition = false;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -187,12 +187,10 @@ namespace StarterAssets
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
 		
-            if(Grounded){
-                HitEndFall?.Invoke();
-            }
-            else {
-                HitStartFall?.Invoke();
-            }
+            if(Grounded)
+                OnEndFall?.Invoke();
+            else
+                OnStartFall?.Invoke();
 
             // update animator if using character
             if (_hasAnimator)
