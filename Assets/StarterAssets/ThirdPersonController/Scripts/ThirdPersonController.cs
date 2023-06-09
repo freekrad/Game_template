@@ -90,6 +90,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private bool _isFall = false;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -187,10 +188,18 @@ namespace StarterAssets
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
                 QueryTriggerInteraction.Ignore);
 		
-            if(Grounded)
-                OnEndFall?.Invoke();
-            else
-                OnStartFall?.Invoke();
+            if(_isFall){
+                if(Grounded){
+                    _isFall = false;
+                    OnEndFall?.Invoke();
+                }
+            }
+            if(!_isFall){
+                if(!Grounded){
+                    _isFall = true;
+                    OnStartFall?.Invoke();
+                }
+            }
 
             // update animator if using character
             if (_hasAnimator)
